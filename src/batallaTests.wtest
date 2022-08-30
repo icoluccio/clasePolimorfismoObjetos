@@ -1,0 +1,35 @@
+import batalla.*
+
+describe "Tests del personaje" {
+
+	test "arranca con 10 de vida" {
+		assert.equals(10, personaje.vida())
+	}
+
+	test "si se come un churrasco, sube su vida" {
+		personaje.comer(churrasco)
+		assert.equals(20, personaje.vida())
+	}
+
+	test "si se ataca a sí mismo, su vida baja en 2" {
+		personaje.atacar(personaje)
+		assert.equals(7, personaje.vida())
+	}
+
+	test "si ataca a un troll, la vida baja en 2" {
+		personaje.atacar(troll)
+		assert.equals(99, troll.vida())
+	}
+
+	test "si recibe insuficiente daño, sigue vivo" {
+		personaje.recibirDanio(9)
+		assert.that(personaje.sigueVivo())
+	}
+
+	test "si recibe suficiente daño, muere" {
+		personaje.recibirDanio(11)
+		assert.notThat(personaje.sigueVivo())
+	}
+
+}
+

@@ -1,0 +1,65 @@
+import drCasa.*
+
+describe "Tests del Dr Casa" {
+
+	test "arranca con 36.5 de temperatura" {
+		assert.equals(36.5, logan.temperatura())
+	}
+
+	test "arranca con 40000 celulas" {
+		assert.equals(40000, logan.celulas())
+	}
+
+	test "arranca sin fiebre" {
+		assert.notThat(logan.tieneFiebre())
+	}
+	
+	test "si tiene malaria pero no pasó un día, sigue sin fiebre" {
+		logan.enfermedad(malaria)
+		assert.notThat(logan.tieneFiebre())
+	}
+	
+	test "si tiene malaria pero pasó un día, tiene fiebre" {
+		logan.enfermedad(malaria)
+		logan.vivirUnDia()
+		assert.that(logan.tieneFiebre())
+	}
+	
+	test "si tiene malaria y pasó un día, no cambian sus células" {
+		logan.enfermedad(malaria)
+		logan.vivirUnDia()
+		assert.equals(40000, logan.celulas())
+	}
+	
+	test "si tiene lupus pero pasó un día, tiene menos células" {
+		logan.enfermedad(lupus)
+		logan.vivirUnDia()
+		assert.equals(39990, logan.celulas())
+	}
+	
+	test "si tiene lupus pero pasaron 5 días, tiene menos células" {
+		logan.enfermedad(lupus)
+		logan.vivirDias(5)
+		assert.equals(39950, logan.celulas())
+	}
+	
+	test "si tiene lupus y pasó un día, no cambia su temperatura" {
+		logan.enfermedad(lupus)
+		logan.vivirUnDia()
+		assert.equals(36.5, logan.temperatura())
+	}
+	
+	test "si tiene el chip sin nada programado, no hace nada con su temperatura" {
+		logan.enfermedad(enfermedadDeLaboratorio)
+		logan.vivirUnDia()
+		assert.equals(36.5, logan.temperatura())
+	}
+
+	test "si tiene el chip con algo que sube 5 grados ahora tiene mucha fiebre" {
+		logan.enfermedad(enfermedadDeLaboratorio)
+	    enfermedadDeLaboratorio.chip({paciente => paciente.aumentarTemperatura(5)})
+		logan.vivirUnDia()
+		assert.equals(41.5, logan.temperatura())
+	}
+}
+
