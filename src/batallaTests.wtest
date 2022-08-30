@@ -1,4 +1,4 @@
-import batalla3.*
+import batalla.*
 
 describe "Tests del personaje" {
 
